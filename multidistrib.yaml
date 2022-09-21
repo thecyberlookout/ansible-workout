@@ -1,0 +1,27 @@
+- name: MULITIDITRIB UPDATE
+  hosts: mypis
+  become: yes
+
+  tasks:
+  - name: Update Debian os family
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+    when: ansible_facts['os_family'] == "Debian"
+    async: 200 # Maximum allowed time in Seconds
+      poll: 0 # Polling Interval in Seconds
+      register: scrout
+
+  - name: Upgrade all packages on Debian
+    apt: upgrade=dist force_apt_get=yes
+    when: ansible_facts['os_family'] == "Debian"
+    async: 180 # Maximum allowed time in Seconds
+      poll: 0 # Polling Interval in Seconds
+      register: scrout
+
+  - name: Update and Upgrade last version for RedHat os family
+    dnf:
+        name: '*'
+        state: latest
+    when: ansible_facts['os_family'] == "RedHat"
+
+  - fail:
+     when: 1 == 1

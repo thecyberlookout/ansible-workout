@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+  - name: ansible create directory tools
+    file:
+      path: $HOME/tools
+      state: directory
+  - name: ansible create directory tools
+    file:
+      path: $HOME/reports
+      state: directory

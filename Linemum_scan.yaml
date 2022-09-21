@@ -1,0 +1,21 @@
+# SECURITY ANALYSIS FOR LINUX HARDING LINUX
+- name: Linenum Analysis
+  hosts: mypis:localhost
+  become: yes
+  tasks:
+  - name: Get timestamp from the system
+    shell: "date +%Y-%m-%d%H-%M-%S"
+    register: tstamp
+
+  - name: Hostname Export
+    shell: "hostname"
+    register: hst
+
+  - name: Set variables
+    set_fact:
+     cur_date: "{{ tstamp.stdout[0:10]}}"
+     cur_time: "{{ tstamp.stdout[10:]}}"
+     hsto: "{{ hst }}"
+
+  - name: Execute Analysis
+    ansible.builtin.shell: $HOME/tools/LinEnum/LinEnum.sh >> $HOME/reports/linenum_rpt.txt

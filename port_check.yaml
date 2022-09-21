@@ -1,0 +1,20 @@
+- name: Port check
+  hosts: localhost
+  become: yes
+  tasks:
+
+  - name: "Check if port {{ item.name }} is listening"
+    wait_for:
+      port: "{{ item.name }}"
+      delay: 5
+      timeout: 10
+      msg: "Timeout waiting for {{ item.name }} to respond"
+    register: port_check
+    loop:
+      - { name: '443', }
+      - { name: '80', }
+      - { name: '22', }
+      - { name: '9443', }
+      - { name: '2222', }
+      - { name: '8080', }
+    ignore_errors: yes

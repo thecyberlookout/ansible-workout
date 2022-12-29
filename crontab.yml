@@ -1,0 +1,19 @@
+- name: Crontab
+  hosts: all
+  become: yes
+  tasks:
+
+# un job par crontab sinon le dernier job est seul enregistrer 
+
+    - name: crontab example
+      cron:
+        user: user
+        minute: "{{ item.min }}"
+        hour: "{{ item.h }}"
+        day: "{{ item.day }}"
+        month: "{{ item.m }}"
+        weekday: "{{ item.w }}"
+        job: "{{ item.job }}"
+        state: present
+      with_items:
+        - { min: '*', h: '*', day: '*', m: '*', w: '*' , job:'SCRIPT JOB' }
